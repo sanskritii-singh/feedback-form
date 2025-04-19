@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: rgb(255,254,175);
+            background: linear-gradient(180deg, rgba(255,254,175,1) 27%, rgba(255,188,188,1) 100%, rgba(29,29,29,1) 100%, rgba(28,28,28,1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: scroll;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        /* Star Rating */
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            justify-content: start;
+            margin-bottom: 12px;
+            flex-direction: row-reverse;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input:checked ~ label {
+            color: #f5b301;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f5b301;
+        }
+        button {
+            background-color: #ffbcbc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Feedback Form</h2>
+    <form action="#" method="POST" enctype="multipart/form-data" onsubmit="event.preventDefault(); previewFeedback();">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label>Star Rating:</label>
+        <div class="star-rating">
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1">&#9733;</label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2">&#9733;</label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3">&#9733;</label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4">&#9733;</label>
+            <input type="radio" id="star5" name="rating" value="5" />
+            <label for="star5">&#9733;</label>
+        </div>
+
+        <label for="review">Write a Review:</label>
+        <textarea id="review" name="review" rows="4" required></textarea>
+
+        <label for="photo">Upload Photograph:</label>
+        <input type="file" id="photo" name="photo" accept="image/*"/>
+        
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Preview Section -->
+    <div id="preview-section" style="display:none; margin-top:20px;">
+        <h3>Preview</h3>
+        <p><strong>Name:</strong> <span id="preview-name"></span></p>
+        <p><strong>Email:</strong> <span id="preview-email"></span></p>
+        <p><strong>Rating:</strong> <span id="preview-rating"></span></p>
+        <p><strong>Review:</strong> <span id="preview-review"></span></p>
+        <img id="preview-photo" />
+    </div>
+</div>
+
+<script>
+
+    function previewFeedback() {
+        document.getElementById('preview-name').innerText = document.getElementById('name').value;
+        document.getElementById('preview-email').innerText = document.getElementById('email').value;
+        document.getElementById('preview-rating').innerText = document.querySelector('input[name="rating"]:checked') 
+            ? document.querySelector('input[name="rating"]:checked').value + ' Stars' 
+            : 'No Rating';
+        document.getElementById('preview-review').innerText = document.getElementById('review').value;
+
+        const file = document.getElementById('photo').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewPhoto = document.getElementById('preview-photo');
+                previewPhoto.src = e.target.result;
+                previewPhoto.style.display = 'block';
+                previewPhoto.style.maxWidth = '100%';
+                previewPhoto.style.borderRadius = '4px';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('preview-photo').style.display = 'none';
+        }
+
+        document.getElementById('preview-section').style.display = 'block';
+        document.body.style.overflow = 'scroll';
+    }
+</script>
+
+</body>
+</html>
